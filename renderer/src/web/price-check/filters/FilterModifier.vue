@@ -113,9 +113,15 @@
               }}</span
             >
             <filter-modifier-tiers :filter="filter" :item="item" />
-            <filter-modifier-item-has-empty :filter="filter" />
+            <filter-modifier-item-has-empty
+              :filter="filter"
+              v-if="tradeId === 'item.has_empty_modifier'"
+            />
           </div>
-          <filter-modifier-item-is-elemental :filter="filter" />
+          <filter-modifier-item-is-elemental
+            :filter="filter"
+            v-if="tradeId === 'item.elemental_dps'"
+          />
         </div>
 
         <stat-roll-slider
@@ -131,7 +137,7 @@
       </div>
     </div>
     <div class="flex flex-col">
-      <modifier-anointment :filter="filter" />
+      <modifier-anointment :filter="filter" v-if="filter.oils" />
     </div>
   </div>
 </template>
@@ -362,6 +368,11 @@ export default defineComponent({
             props.item.info.refName.startsWith("Time-Lost")) ||
           text.value.startsWith(_$.GRANTS_SKILL),
       ),
+      tradeId: computed(() => {
+        if (props.filter.tradeId.length > 0) {
+          return props.filter.tradeId[0];
+        }
+      }),
     };
   },
 });

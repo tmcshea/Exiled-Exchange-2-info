@@ -297,6 +297,7 @@ export default defineComponent({
 
     MainProcess.onEvent("MAIN->CLIENT::item-text", (e) => {
       if (e.target !== "price-check") return;
+      performance.mark("price-check-event");
 
       if (Host.isElectron && !e.focusOverlay) {
         // everything in CSS pixels
@@ -328,11 +329,13 @@ export default defineComponent({
       wm.show(props.config.wmId);
       checkPosition.value = e.position;
       advancedCheck.value = e.focusOverlay;
+      performance.mark("price-check-start-handling-item");
       item.value = handleItemPaste({ clipboard: e.clipboard, item: e.item });
 
       if (item.value.isOk()) {
         queuePricesFetch();
       }
+      performance.mark("price-check-event-end");
     });
 
     function handleItemPaste(e: { clipboard: string; item: any }) {
@@ -352,6 +355,7 @@ export default defineComponent({
           message: `${err}_help`,
           rawText: e.clipboard,
         }));
+      performance.mark("price-check-parse-end");
       return newItem;
     }
 

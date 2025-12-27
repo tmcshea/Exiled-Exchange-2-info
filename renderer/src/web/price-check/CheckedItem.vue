@@ -1,5 +1,5 @@
 <template>
-  <div v-if="show" class="p-4 layout-column min-h-0">
+  <div v-if="noUniqueSelection" class="p-4 layout-column min-h-0">
     <filter-name :filters="itemFilters" :item="item" />
     <!-- <price-prediction v-if="showPredictedPrice" class="mb-4" :item="item" /> -->
     <!-- <price-trend v-else :item="item" :filters="itemFilters" /> -->
@@ -159,6 +159,7 @@ export default defineComponent({
     watch(
       () => props.item,
       (item, prevItem) => {
+        performance.mark("checked-item-item-changed");
         const prevCurrency =
           presets.value != null ? itemFilters.value.trade.currency : undefined;
 
@@ -209,6 +210,7 @@ export default defineComponent({
         if (tradeAPI.value === "bulk") {
           itemFilters.value.trade.listingType = "online";
         }
+        performance.mark("checked-item-switch-item-end");
       },
       { immediate: true, deep: true },
     );
@@ -267,29 +269,7 @@ export default defineComponent({
       { deep: false },
     );
 
-    const showPredictedPrice = computed(() => {
-      if (
-        !widget.value.requestPricePrediction ||
-        AppConfig().language !== "en" ||
-        !leagues.selected.value!.isPopular
-      )
-        return false;
-
-      if (presets.value.active === "filters.preset_base_item") return false;
-
-      return (
-        props.item.rarity === ItemRarity.Rare &&
-        props.item.category !== ItemCategory.Map &&
-        props.item.category !== ItemCategory.CapturedBeast &&
-        props.item.category !== ItemCategory.HeistContract &&
-        props.item.category !== ItemCategory.HeistBlueprint &&
-        props.item.category !== ItemCategory.Invitation &&
-        props.item.info.refName !== "Expedition Logbook" &&
-        !props.item.isUnidentified
-      );
-    });
-
-    const show = computed(() => {
+    const noUniqueSelection = computed(() => {
       return !(
         props.item.rarity === ItemRarity.Unique &&
         props.item.isUnidentified &&
@@ -365,9 +345,8 @@ export default defineComponent({
       tradeAPI,
       tradeService,
       filtersComponent,
-      showPredictedPrice,
       showTip,
-      show,
+      noUniqueSelection,
       handleSearchMouseenter,
       showSupportLinks,
       presets: computed(() =>

@@ -39,6 +39,7 @@ export function createExactStatFilters(
   statsByType: StatCalculated[],
   opts: { searchStatRange: number; defaultAllSelected: boolean },
 ): StatFilter[] {
+  performance.mark("create-exact-filters-start");
   if (item.mapBlighted || item.category === ItemCategory.Invitation) return [];
   if (
     item.isUnidentified &&
@@ -184,6 +185,7 @@ export function initUiModFilters(
     defaultAllSelected: boolean;
   },
 ): StatFilter[] {
+  performance.mark("create-ui-filters-start");
   const ctx: FiltersCreationContext = {
     item,
     filters: [],
