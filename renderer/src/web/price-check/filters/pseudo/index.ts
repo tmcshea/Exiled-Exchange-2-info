@@ -10,7 +10,7 @@ import {
   calculatedStatToFilter,
   FiltersCreationContext,
 } from "../create-stat-filters";
-import type { StatFilter } from "../interfaces";
+import { type StatFilter } from "../interfaces";
 import { ARMOUR_STATS, WEAPON_STATS } from "./item-property";
 import { tryParseTranslation } from "@/parser/stat-translations";
 
@@ -202,6 +202,15 @@ const PSEUDO_RULES: PseudoRule[] = [
   {
     pseudo: stat("#% increased Movement Speed"),
     stats: [{ ref: stat("#% increased Movement Speed") }],
+    mutate(filter) {
+      if (
+        filter.sources.length !== 1 ||
+        (filter.sources.length === 1 &&
+          filter.sources[0].modifier.info.type !== ModifierType.Implicit)
+      ) {
+        filter.disabled = false;
+      }
+    },
   },
   // {
   //   pseudo: stat("#% total increased Physical Damage"),

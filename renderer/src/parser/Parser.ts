@@ -616,8 +616,6 @@ function parseRequirements(section: string[], item: ParsedItem) {
     int: parseInt(match.groups!.int ?? "0"),
   };
 
-  console.log(item.requires);
-
   return "SECTION_PARSED";
 }
 
