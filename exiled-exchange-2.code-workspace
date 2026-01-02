@@ -21,6 +21,23 @@
       "path": "."
     }
   ],
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "item-drop update comments remove",
+        "command": "grep -v -E \"^\\s{2,}//\" ${fileBasename} > ${fileBasenameNoExtension}.json",
+        "type": "shell",
+        "args": [],
+        "presentation": {
+          "reveal": "always"
+        },
+        "options": {
+          "cwd": "${fileWorkspaceFolder}//public//data"
+        }
+      }
+    ]
+  },
   "settings": {
     "files.exclude": {
       "main/": true,
@@ -43,8 +60,10 @@
       "Assailum",
       "Astramentis",
       "Atalui's",
+      "Atziri",
       "Atziri's",
       "Atzoatl",
+      "Avelyne",
       "azmeri",
       "Barya",
       "Basetype",
@@ -65,7 +84,9 @@
       "Estazunti",
       "exiledexchange",
       "Garukhan's",
+      "Guatelitzi's",
       "Hateforge",
+      "Hayoxi's",
       "heistequipment",
       "heistmission",
       "heistreward",
@@ -87,17 +108,22 @@
       "Kaom's",
       "keybind",
       "keybinds",
+      "Khatal's",
       "Knockback",
+      "Kulemak",
       "Kulemak's",
       "Kurgal's",
       "Lich",
       "Mahuxotl's",
       "Manchettes",
+      "Manoki",
+      "Maztli",
       "metagem",
       "millis",
       "Morior",
       "Netol's",
       "nonunique",
+      "Olroth",
       "Olroth's",
       "Olrovasara",
       "oneaxe",
@@ -125,12 +151,14 @@
       "Svalinn",
       "Synthesised",
       "Tangmazu's",
+      "Tasalio's",
       "Tawhoa's",
       "Techrod's",
       "Tecrod's",
       "Temporalis",
       "Timelost",
       "tmid",
+      "Trialmaster",
       "Trialmaster's",
       "twoaxe",
       "twomace",
@@ -139,14 +167,20 @@
       "uniquefoil",
       "uniquejewel",
       "Varashta's",
+      "Varloch",
       "vitepress",
       "Warstaff",
       "WAYSTONE",
       "Waystones",
       "Wyrm",
       "xchg",
+      "Xesht",
       "Xesht's",
+      "Xibaqua's",
       "Xoph's",
+      "Ytzara",
+      "Zahmir",
+      "Zarokh",
       "Zarokh's",
       "Zerphi's",
       "Zorder"

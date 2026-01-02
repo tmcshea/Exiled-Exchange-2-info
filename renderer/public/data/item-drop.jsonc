@@ -1,5 +1,5 @@
 [
-  // Fragments
+  //#region Fragments
   {
     "query": [
       "ITEM::Primary Calamity Fragment",
@@ -123,48 +123,26 @@
       "UNIQUE::Assailum // Closed Helm"
     ]
   },
+  //#endregion
+  //#region Lineage gem groups
+  // non-world drop ones that have a chance to drop together
+  // Drops from a Lineage Gems Vault (Hall of Reverence) in Atziri's Temple.
   {
     "query": [
-      "GEM::Rakiata's Flow",
-      "GEM::Kaom's Madness",
-      "GEM::Tawhoa's Tending"
+      "GEM::Guatelitzi's Ablation",
+      "GEM::Hayoxi's Fulmination"
     ],
     "items": []
   },
+  // Drops from Atziri's Vault in Atziri's Temple after defeating Atziri, the Red Queen.
   {
     "query": [
-      "ITEM::Idol of Estazunti"
-    ],
-    "items": [
-      "GEM::Atziri's Allure",
-      "GEM::Atalui's Bloodletting",
-      "GEM::Paquate's Pact"
-    ]
-  },
-  {
-    "query": [
-      "GEM::Atziri's Allure",
-      "GEM::Atalui's Bloodletting",
-      "GEM::Paquate's Pact"
+      "GEM::Atziri's Impatience",
+      "GEM::Zerphi's Infamy"
     ],
     "items": []
   },
-  {
-    "query": [
-      "GEM::Zarokh's Refrain",
-      "GEM::Garukhan's Resolve",
-      "GEM::Varashta's Blessing"
-    ],
-    "items": []
-  },
-  {
-    "query": [
-      "GEM::Einhar's Beastrite",
-      "GEM::Rigwald's Ferocity",
-      "GEM::Ailith's Chimes"
-    ],
-    "items": []
-  },
+  // Drops from Large Abyssal Troves at the end of an Abyssal Depths or from Vessel of Kulemak.
   {
     "query": [
       "GEM::Techrod's Revenge",
@@ -173,7 +151,82 @@
     ],
     "items": []
   },
-  // Reliquary Keys
+  // Drops from Anomaly boss Manoki, the Chosen in The Jade Isles.
+  {
+    "query": [
+      "GEM::Rakiata's Flow",
+      "GEM::Kaom's Madness",
+      "GEM::Tawhoa's Tending",
+      "GEM::Tasalio's Rhythm"
+    ],
+    "items": []
+  },
+  // Drops from Anomaly boss Zahmir, the Blade Sovereign in Sacred Reservoir and Zarokh, the Temporal.
+  {
+    "query": [
+      "GEM::Zarokh's Refrain",
+      "GEM::Garukhan's Resolve",
+      "GEM::Varashta's Blessing",
+      "GEM::Khatal's Rejuvenation"
+    ],
+    "items": []
+  },
+  // Drops from Anomaly bosses Varloch, the Ashen Lord and Avelyne, the Withered Rose in Derelict Mansion.
+  {
+    "query": [
+      "GEM::Einhar's Beastrite",
+      "GEM::Rigwald's Ferocity",
+      "GEM::Ailith's Chimes"
+    ],
+    "items": []
+  },
+  // Drops from Anomaly bosses Ytzara, Blood Oracle and Maztli, Flesh-Shaper in Sealed Vault.
+  {
+    // dont think idol is drop enabled anymore
+    "query": [
+      "ITEM::Idol of Estazunti"
+    ],
+    "items": [
+      "GEM::Atziri's Allure",
+      "GEM::Atalui's Bloodletting",
+      "GEM::Paquate's Pact",
+      "GEM::Xibaqua's Rending"
+    ]
+  },
+  {
+    "query": [
+      "GEM::Atziri's Allure",
+      "GEM::Atalui's Bloodletting",
+      "GEM::Paquate's Pact",
+      "GEM::Xibaqua's Rending"
+    ],
+    "items": []
+  },
+  // Drops from Olroth, Origin of the Fall.
+  {
+    "query": [
+      "GEM::Uhtred's Augury",
+      "GEM::Uhtred's Exodus",
+      "GEM::Uhtred's Omen"
+    ],
+    "items": []
+  },
+  // Drops from The Arbiter of Ash.
+  // "GEM::Arbiter's Ignition",
+  // Drops from The Trialmaster.
+  // "GEM::Ixchel's Torment",
+  // Drops from Xesht, We That Are One.
+  {
+    "query": [
+      "GEM::Xoph's Pyre",
+      "GEM::Tul's Stillness",
+      "GEM::Esh's Radiance",
+      "GEM::Uul-Netol's Embrace"
+    ],
+    "items": []
+  },
+  //#endregion
+  //#region Reliquary Keys
   {
     "query": [
       "ITEM::Tangmazu's Reliquary Key"
@@ -250,7 +303,8 @@
       "UNIQUE::Beetlebite // Velour Shoes"
     ]
   },
-  // Currency Groups
+  //#endregion
+  //#region League currency groups
   {
     "query": [
       "ITEM::Concentrated Liquid Isolation",
@@ -268,7 +322,6 @@
       "ITEM::Simulacrum Splinter"
     ]
   },
-  // Check how this looks on UI may be too long
   {
     "query": [
       "ITEM::Adaptive Catalyst",
@@ -296,7 +349,8 @@
     ],
     "items": []
   },
-  // Tiered Currencies
+  //#endregion
+  //#region Tiered Currencies
   {
     "query": [
       "ITEM::Chaos Orb",
@@ -345,7 +399,8 @@
     ],
     "items": []
   },
-  // Crafting items commonly used together
+  //#endregion
+  //#region Crafting items commonly used together
   {
     "query": [
       "ITEM::Omen of Abyssal Echoes"
@@ -492,7 +547,8 @@
       "ITEM::Orb of Chance"
     ]
   },
-  // Trials
+  //#endregion
+  //#region Trials
   {
     "query": [
       "ITEM::Inscribed Ultimatum"
@@ -551,4 +607,5 @@
       "ITEM::Zarokh's Reliquary Key: Sekhema's Resolve"
     ]
   }
+  //#endregion
 ]

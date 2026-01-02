@@ -124,27 +124,32 @@
   },
   {
     "query": [
-      "GEM::Rakiata's Flow",
-      "GEM::Kaom's Madness",
-      "GEM::Tawhoa's Tending"
+      "GEM::Guatelitzi's Ablation",
+      "GEM::Hayoxi's Fulmination"
     ],
     "items": []
   },
   {
     "query": [
-      "ITEM::Idol of Estazunti"
+      "GEM::Atziri's Impatience",
+      "GEM::Zerphi's Infamy"
     ],
-    "items": [
-      "GEM::Atziri's Allure",
-      "GEM::Atalui's Bloodletting",
-      "GEM::Paquate's Pact"
-    ]
+    "items": []
   },
   {
     "query": [
-      "GEM::Atziri's Allure",
-      "GEM::Atalui's Bloodletting",
-      "GEM::Paquate's Pact"
+      "GEM::Techrod's Revenge",
+      "GEM::Kulemak's Dominion",
+      "GEM::Kurgal's Leash"
+    ],
+    "items": []
+  },
+  {
+    "query": [
+      "GEM::Rakiata's Flow",
+      "GEM::Kaom's Madness",
+      "GEM::Tawhoa's Tending",
+      "GEM::Tasalio's Rhythm"
     ],
     "items": []
   },
@@ -152,7 +157,8 @@
     "query": [
       "GEM::Zarokh's Refrain",
       "GEM::Garukhan's Resolve",
-      "GEM::Varashta's Blessing"
+      "GEM::Varashta's Blessing",
+      "GEM::Khatal's Rejuvenation"
     ],
     "items": []
   },
@@ -166,9 +172,38 @@
   },
   {
     "query": [
-      "GEM::Techrod's Revenge",
-      "GEM::Kulemak's Dominion",
-      "GEM::Kurgal's Leash"
+      "ITEM::Idol of Estazunti"
+    ],
+    "items": [
+      "GEM::Atziri's Allure",
+      "GEM::Atalui's Bloodletting",
+      "GEM::Paquate's Pact",
+      "GEM::Xibaqua's Rending"
+    ]
+  },
+  {
+    "query": [
+      "GEM::Atziri's Allure",
+      "GEM::Atalui's Bloodletting",
+      "GEM::Paquate's Pact",
+      "GEM::Xibaqua's Rending"
+    ],
+    "items": []
+  },
+  {
+    "query": [
+      "GEM::Uhtred's Augury",
+      "GEM::Uhtred's Exodus",
+      "GEM::Uhtred's Omen"
+    ],
+    "items": []
+  },
+  {
+    "query": [
+      "GEM::Xoph's Pyre",
+      "GEM::Tul's Stillness",
+      "GEM::Esh's Radiance",
+      "GEM::Uul-Netol's Embrace"
     ],
     "items": []
   },
