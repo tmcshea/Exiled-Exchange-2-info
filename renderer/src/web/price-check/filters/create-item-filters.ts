@@ -468,7 +468,7 @@ export function createFilters(
     }
   }
 
-  if (item.category === ItemCategory.Tablet) {
+  if (item.category === ItemCategory.Tablet && !item.isUnidentified) {
     const usesRemaining = item.statsByType.find(
       (t) => t.type === ModifierType.Implicit,
     )!.sources[0].contributes!.value;
