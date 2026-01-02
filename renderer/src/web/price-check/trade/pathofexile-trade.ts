@@ -281,6 +281,7 @@ interface FetchResult {
     };
     pseudoMods?: string[];
     desecratedMods?: string[];
+    fracturedMods?: string[];
   };
   listing: {
     indexed: string;
@@ -1040,6 +1041,9 @@ export async function requestResults(
     const desecratedMods = result.item.desecratedMods?.map((s) =>
       parseAffixStrings(s),
     );
+    const fracturedMods = result.item.fracturedMods?.map((s) =>
+      parseAffixStrings(s),
+    );
     const pseudoMods = result.item.pseudoMods?.map((s) => {
       if (s.startsWith("Sum: ")) {
         const pseudoRes = +s.slice(5);
@@ -1076,7 +1080,9 @@ export async function requestResults(
       runeMods,
       implicitMods,
       // HACK: fix the implementation at some point
-      explicitMods: (explicitMods ?? []).concat(desecratedMods ?? []),
+      explicitMods: (fracturedMods ?? [])
+        .concat(explicitMods ?? [])
+        .concat(desecratedMods ?? []),
       enchantMods,
       pseudoMods,
       extended,
