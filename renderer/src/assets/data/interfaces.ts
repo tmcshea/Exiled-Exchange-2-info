@@ -246,6 +246,8 @@ export interface TranslationDict {
   DOUBLE_CORRUPTED: string;
   IMPLICIT_MODIFIER: string;
   REQUIRES_LINE: RegExp;
+  UNIQUE_MODIFIER: string;
+  VAAL_UNIQUE_MODIFIER: string;
 }
 
 export interface Filter {

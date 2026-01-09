@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: 'Raridade de Itens: ',
   WAYSTONE_GOLD: 'Ouro Encontrado: ',
   DOUBLE_CORRUPTED: 'Corrompido Duas Vezes',
+  UNIQUE_MODIFIER: 'Mod Único',
+  VAAL_UNIQUE_MODIFIER: 'Modificador Único Vaal',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]

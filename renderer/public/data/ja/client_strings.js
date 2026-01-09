@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: 'アイテムレアリティ: ',
   WAYSTONE_GOLD: '見つかるゴールド: ',
   DOUBLE_CORRUPTED: 'ダブルコラプト状態',
+  UNIQUE_MODIFIER: 'ユニークモッド',
+  VAAL_UNIQUE_MODIFIER: 'ヴァールユニークモッド',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]

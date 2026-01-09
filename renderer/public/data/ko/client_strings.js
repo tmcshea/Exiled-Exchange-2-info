@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: '아이템 희귀도: ',
   WAYSTONE_GOLD: '골드 발견량: ',
   DOUBLE_CORRUPTED: '두 번 타락',
+  UNIQUE_MODIFIER: '고유 속성 부여',
+  VAAL_UNIQUE_MODIFIER: '바알 고유 속성',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]

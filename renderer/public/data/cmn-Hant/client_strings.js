@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: '物品稀有度: ',
   WAYSTONE_GOLD: '找到黃金: ',
   DOUBLE_CORRUPTED: '雙重 Corrupted',
+  UNIQUE_MODIFIER: '傳奇詞綴',
+  VAAL_UNIQUE_MODIFIER: '瓦爾傳奇終結特效',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]

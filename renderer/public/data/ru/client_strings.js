@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: 'Редкость предметов: ',
   WAYSTONE_GOLD: 'Выпадение золота: ',
   DOUBLE_CORRUPTED: 'Дважды осквернено',
+  UNIQUE_MODIFIER: 'Уникальное свойство ',
+  VAAL_UNIQUE_MODIFIER: 'Уникальное свойство ваал',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]
@@ -157,7 +159,8 @@ export default {
   CHAT_WHISPER_FROM: /^@От кого (?:<(?<guild_tag>.+?)> )?(?<char_name>.+?): (?<body>.+)$/,
   // [Manual]
   CHAT_WEBTRADE_GEM: /^level (?<gem_lvl>\d+) (?<gem_qual>\d+)% (?<gem_name>.+)$/,
-  LOG_LEVEL_UP: /^(.*) теперь (?<level>\d+) уровня$/,
+  // [Override]
+  LOG_LEVEL_UP: /^(.*) достигает (?<level>\d+) уровня$/,
   // [Manual]
   LOG_ZONE_GEN: /^Generating level (?<area_level>\d+) area "(?<zone>.*)" with seed (?<seed>\d+)$/,
   REQUIRES_LINE: /^Требуется: \s*(?:Уровень[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*(Сила|Сила))?\D*(?:(?<dex>\d+)[^\d,]*(Ловкость|Ловк))?\D*(?:(?<int>\d+)[^\d,]*(Интеллект|Инт))?$/,

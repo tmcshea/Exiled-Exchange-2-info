@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: 'Gegenstandsseltenheit: ',
   WAYSTONE_GOLD: 'Gefundenes Gold: ',
   DOUBLE_CORRUPTED: 'Doppelt verderbt',
+  UNIQUE_MODIFIER: 'Einzigartiger Modifikator',
+  VAAL_UNIQUE_MODIFIER: 'Einzigartiger Vaal-Modifikator',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]
