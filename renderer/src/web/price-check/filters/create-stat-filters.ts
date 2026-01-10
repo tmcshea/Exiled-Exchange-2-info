@@ -21,6 +21,7 @@ import {
 import { filterPseudo } from "./pseudo";
 import { applyRules as applyAtzoatlRules } from "./pseudo/atzoatl-rules";
 import { applyRules as applyMirroredTabletRules } from "./pseudo/reflection-rules";
+import { applyRules as applyMissingFracturedRules } from "./pseudo/missing-fractured-rules";
 import { filterItemProp, filterBasePercentile } from "./pseudo/item-property";
 import { decodeOils, applyAnointmentRules } from "./pseudo/anointments";
 import { StatBetter, CLIENT_STRINGS } from "@/assets/data";
@@ -129,6 +130,17 @@ export function createExactStatFilters(
       filter.roll!.default.min = filter.roll!.value;
       filter.roll!.default.max = filter.roll!.value;
     }
+  }
+
+  // fractured but no mods are actually fractured (bug in game: https://www.pathofexile.com/forum/view-thread/3891367)
+  if (
+    ctx.item.isFractured &&
+    !ctx.filters.some((f) => f.tag === FilterTag.Fractured)
+  ) {
+    const explicitStats = statsByType
+      .filter((calc) => calc.type === ModifierType.Explicit)
+      .map((mod) => calculatedStatToFilter(mod, ctx.searchInRange, item));
+    applyMissingFracturedRules(ctx.filters, explicitStats);
   }
 
   const hasEmptyModifier = showHasEmptyModifier(ctx);

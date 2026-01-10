@@ -226,6 +226,32 @@
             :stat="stat"
           />
         </template>
+        <template v-if="showMissingFracturedWarning">
+          <div class="py-2 border-b border-gray-700 flex flex-col">
+            <div class="pb-1 flex items-baseline">
+              <i
+                class="w-5 shrink-0 fas fa-exclamation-triangle text-orange-400"
+              ></i>
+              <div
+                class="search-text mr-1 relative flex min-w-0"
+                style="line-height: 1rem"
+              >
+                {{ t("Unable to determine fractured stat") }}
+              </div>
+            </div>
+            <div class="ml-5 text-xs leading-none">
+              <span class="text-gray-600"
+                >{{ t("filters.tag_explicit") }} &mdash;
+              </span>
+              <a
+                target="_blank"
+                href="https://www.pathofexile.com/forum/view-thread/3891367"
+                class="text-orange-400 underline hidden"
+                >Bug Report</a
+              >
+            </div>
+          </div>
+        </template>
         <input type="submit" class="hidden" />
       </form>
       <div class="flex gap-x-4">
@@ -272,6 +298,7 @@ import { ParsedItem, ItemRarity, ItemCategory } from "@/parser";
 import FilterBtnDropdown from "./FilterBtnDropdown.vue";
 import { AUGMENT_DATA_BY_AUGMENT } from "@/assets/data";
 import { ARMOUR, MARTIAL_WEAPON } from "@/parser/meta";
+import { ModifierType } from "@/parser/modifiers";
 
 export default defineComponent({
   name: "FiltersBlock",
@@ -408,6 +435,20 @@ export default defineComponent({
         } else {
           return t("filters.hidden_toggle");
         }
+      }),
+      showMissingFracturedWarning: computed(() => {
+        return (
+          // is fractured
+          props.item.isFractured &&
+          // on base item preset
+          props.presets.some(
+            (p) => p.id === "filters.preset_base_item" && p.active,
+          ) &&
+          // but item itself has no fractured mods
+          !props.item.statsByType.some(
+            (calc) => calc.type === ModifierType.Fractured,
+          )
+        );
       }),
     };
   },
