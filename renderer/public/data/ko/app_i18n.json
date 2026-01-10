@@ -62,7 +62,7 @@
     "linked_sockets": "연결부: {0}",
     "white_sockets": "흰 홈: {0}",
     "gem_sockets": "Sockets: {0}",
-    "rune_sockets": "Sockets: {0}",
+    "augment_sockets": "Sockets: {0}",
     "quality": "퀄리티: {0}",
     "gem_level": "젬 레벨: {0}",
     "sentinel_charge": "Charge: {0}",
@@ -207,6 +207,7 @@
     "tag_sanctum": "성역",
     "tag_desecrated": "훼손된",
     "tag_skill": "Skill",
+    "tag_mutated": "Mutated",
     "fill_rune_iron": "Fill Runes(Iron)",
     "grade": "등급 {0}",
     "hybrid_note": "ハイブリッドモッドであるためティアが誤っている可能性があります"

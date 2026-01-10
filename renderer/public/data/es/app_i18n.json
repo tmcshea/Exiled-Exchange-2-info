@@ -67,7 +67,7 @@
     "quality": "Calidad: {0}",
     "gem_level": "Nivel: {0}",
     "gem_sockets": "Ranuras: {0}",
-    "rune_sockets": "Ranuras: {0}",
+    "augment_sockets": "Ranuras: {0}",
     "sentinel_charge": "Carga: {0}",
     "find_in_stash": "Encontrar en el alijo",
     "find_same_price": "Filter by",
@@ -214,6 +214,7 @@
     "tag_sanctum": "Sanctum",
     "tag_desecrated": "profanado",
     "tag_skill": "Skill",
+    "tag_mutated": "Mutated",
     "fill_rune_iron": "Fill Runes(Iron)",
     "grade": "Grade {0}",
     "hybrid_note": "Tier may be incorrect due to the potential for a hybrid mod"

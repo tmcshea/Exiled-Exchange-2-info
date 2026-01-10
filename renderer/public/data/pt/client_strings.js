@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: 'Raridade de Itens: ',
   WAYSTONE_GOLD: 'Ouro Encontrado: ',
   DOUBLE_CORRUPTED: 'Corrompido Duas Vezes',
+  UNIQUE_MODIFIER: 'Mod Único',
+  VAAL_UNIQUE_MODIFIER: 'Modificador Único Vaal',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]
@@ -160,5 +162,5 @@ export default {
   LOG_LEVEL_UP: /^(.*) agora está no nível (?<level>\d+)$/,
   // [Manual]
   LOG_ZONE_GEN: /^Generating level (?<area_level>\d+) area "(?<zone>.*)" with seed (?<seed>\d+)$/,
-  REQUIRES_LINE: /^Requer: \s*(?:Nível[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*For)?\D*(?:(?<dex>\d+)[^\d,]*Des)?\D*(?:(?<int>\d+)[^\d,]*Int)?$/,
+  REQUIRES_LINE: /^Requer: \s*(?:Nível[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*(Força|For))?\D*(?:(?<dex>\d+)[^\d,]*(Destreza|Des))?\D*(?:(?<int>\d+)[^\d,]*(Inteligência|Int))?$/,
 }

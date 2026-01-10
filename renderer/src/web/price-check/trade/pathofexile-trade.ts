@@ -188,7 +188,7 @@ interface TradeRequest {
           ev?: FilterRange;
           // Physical Damage per Second
           pdps?: FilterRange;
-          // Rune Slots
+          // Augment Slots (still called rune on trade site)
           rune_sockets?: FilterRange;
           // Spirit
           spirit?: FilterRange;
@@ -281,6 +281,7 @@ interface FetchResult {
     };
     pseudoMods?: string[];
     desecratedMods?: string[];
+    fracturedMods?: string[];
   };
   listing: {
     indexed: string;
@@ -455,11 +456,11 @@ export function createTradeRequest(
 
   // EQUIPMENT FILTERS
 
-  if (filters.runeSockets && !filters.runeSockets.disabled) {
+  if (filters.augmentSockets && !filters.augmentSockets.disabled) {
     propSet(
       query.filters,
       "equipment_filters.filters.rune_sockets.min",
-      filters.runeSockets.value,
+      filters.augmentSockets.value,
     );
   }
 
@@ -1040,6 +1041,9 @@ export async function requestResults(
     const desecratedMods = result.item.desecratedMods?.map((s) =>
       parseAffixStrings(s),
     );
+    const fracturedMods = result.item.fracturedMods?.map((s) =>
+      parseAffixStrings(s),
+    );
     const pseudoMods = result.item.pseudoMods?.map((s) => {
       if (s.startsWith("Sum: ")) {
         const pseudoRes = +s.slice(5);
@@ -1076,7 +1080,9 @@ export async function requestResults(
       runeMods,
       implicitMods,
       // HACK: fix the implementation at some point
-      explicitMods: (explicitMods ?? []).concat(desecratedMods ?? []),
+      explicitMods: (fracturedMods ?? [])
+        .concat(explicitMods ?? [])
+        .concat(desecratedMods ?? []),
       enchantMods,
       pseudoMods,
       extended,

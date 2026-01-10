@@ -67,7 +67,7 @@
     "quality": "Quality: {0}",
     "gem_level": "Level: {0}",
     "gem_sockets": "Sockets: {0}",
-    "rune_sockets": "Sockets: {0}",
+    "augment_sockets": "Sockets: {0}",
     "sentinel_charge": "Charge: {0}",
     "find_in_stash": "Find in Stash",
     "find_same_price": "Filter by",
@@ -215,6 +215,7 @@
     "tag_sanctum": "Sanctum",
     "tag_desecrated": "Desecrated",
     "tag_skill": "Skill",
+    "tag_mutated": "Mutated",
     "fill_rune_iron": "Fill Runes(Iron)",
     "grade": "Grade {0}",
     "hybrid_note": "Tier may be incorrect due to the potential for a hybrid mod"

@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: '物品稀有度: ',
   WAYSTONE_GOLD: '找到黃金: ',
   DOUBLE_CORRUPTED: '雙重 Corrupted',
+  UNIQUE_MODIFIER: '傳奇詞綴',
+  VAAL_UNIQUE_MODIFIER: '瓦爾傳奇終結特效',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]
@@ -160,5 +162,5 @@ export default {
   LOG_LEVEL_UP: /^(.*) 現在等級 (?<level>\d+)$/,
   // [Manual]
   LOG_ZONE_GEN: /^Generating level (?<area_level>\d+) area "(?<zone>.*)" with seed (?<seed>\d+)$/,
-  REQUIRES_LINE: /^需求: \s*(?:等級[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*力量)?\D*(?:(?<dex>\d+)[^\d,]*敏捷)?\D*(?:(?<int>\d+)[^\d,]*智慧)?$/,
+  REQUIRES_LINE: /^需求: \s*(?:等級[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*(力量|力量))?\D*(?:(?<dex>\d+)[^\d,]*(敏捷|敏捷))?\D*(?:(?<int>\d+)[^\d,]*(智慧|智慧))?$/,
 }

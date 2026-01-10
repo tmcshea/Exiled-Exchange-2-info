@@ -102,6 +102,8 @@ export default {
   WAYSTONE_RARITY: '아이템 희귀도: ',
   WAYSTONE_GOLD: '골드 발견량: ',
   DOUBLE_CORRUPTED: '두 번 타락',
+  UNIQUE_MODIFIER: '고유 속성 부여',
+  VAAL_UNIQUE_MODIFIER: '바알 고유 속성',
   // [Array]
   SHAPER_MODS: ['of Shaping', 'The Shaper\'s'],
   // [Array]
@@ -160,5 +162,5 @@ export default {
   LOG_LEVEL_UP: /^(.*)의 레벨이 (?<level>\d+)이(가) 되었습니다$/,
   // [Manual]
   LOG_ZONE_GEN: /^Generating level (?<area_level>\d+) area "(?<zone>.*)" with seed (?<seed>\d+)$/,
-  REQUIRES_LINE: /^요구 사항: \s*(?:레벨[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*힘)?\D*(?:(?<dex>\d+)[^\d,]*민첩)?\D*(?:(?<int>\d+)[^\d,]*지능)?$/,
+  REQUIRES_LINE: /^요구 사항: \s*(?:레벨[^\d,]*(?<level>\d+))?\D*(?:(?<str>\d+)[^\d,]*(힘|힘))?\D*(?:(?<dex>\d+)[^\d,]*(민첩|민첩))?\D*(?:(?<int>\d+)[^\d,]*(지능|지능))?$/,
 }

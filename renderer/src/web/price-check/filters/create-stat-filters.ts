@@ -21,6 +21,7 @@ import {
 import { filterPseudo } from "./pseudo";
 import { applyRules as applyAtzoatlRules } from "./pseudo/atzoatl-rules";
 import { applyRules as applyMirroredTabletRules } from "./pseudo/reflection-rules";
+import { applyRules as applyMissingFracturedRules } from "./pseudo/missing-fractured-rules";
 import { filterItemProp, filterBasePercentile } from "./pseudo/item-property";
 import { decodeOils, applyAnointmentRules } from "./pseudo/anointments";
 import { StatBetter, CLIENT_STRINGS } from "@/assets/data";
@@ -39,6 +40,7 @@ export function createExactStatFilters(
   statsByType: StatCalculated[],
   opts: { searchStatRange: number; defaultAllSelected: boolean },
 ): StatFilter[] {
+  performance.mark("create-exact-filters-start");
   if (item.mapBlighted || item.category === ItemCategory.Invitation) return [];
   if (
     item.isUnidentified &&
@@ -130,6 +132,17 @@ export function createExactStatFilters(
     }
   }
 
+  // fractured but no mods are actually fractured (bug in game: https://www.pathofexile.com/forum/view-thread/3891367)
+  if (
+    ctx.item.isFractured &&
+    !ctx.filters.some((f) => f.tag === FilterTag.Fractured)
+  ) {
+    const explicitStats = statsByType
+      .filter((calc) => calc.type === ModifierType.Explicit)
+      .map((mod) => calculatedStatToFilter(mod, ctx.searchInRange, item));
+    applyMissingFracturedRules(ctx.filters, explicitStats);
+  }
+
   const hasEmptyModifier = showHasEmptyModifier(ctx);
   if (hasEmptyModifier !== false) {
     const roll = hasEmptyModifier.counts[hasEmptyModifier.empty];
@@ -184,6 +197,7 @@ export function initUiModFilters(
     defaultAllSelected: boolean;
   },
 ): StatFilter[] {
+  performance.mark("create-ui-filters-start");
   const ctx: FiltersCreationContext = {
     item,
     filters: [],
@@ -204,7 +218,7 @@ export function initUiModFilters(
 
   if (item.info.refName !== "Split Personality") {
     filterItemProp(ctx);
-    // TODO: see if there are other options here, don't want to include trade site uniques with random runes
+    // TODO: see if there are other options here, don't want to include trade site uniques with random augments
     if (item.rarity !== ItemRarity.Unique || !getMaxSockets(item)) {
       filterPseudo(ctx);
     }
@@ -312,7 +326,7 @@ export function calculatedStatToFilter(
     filter = {
       tradeId:
         stat.trade.ids[
-          type === ModifierType.AddedRune ? ModifierType.Rune : type
+          type === ModifierType.AddedAugment ? ModifierType.Augment : type
         ],
       statRef: stat.ref,
       text:
@@ -333,7 +347,7 @@ export function calculatedStatToFilter(
   filter ??= {
     tradeId:
       stat.trade.ids[
-        type === ModifierType.AddedRune ? ModifierType.Rune : type
+        type === ModifierType.AddedAugment ? ModifierType.Augment : type
       ],
     statRef: stat.ref,
     text: translation.string,
@@ -351,6 +365,13 @@ export function calculatedStatToFilter(
       filter.tag = FilterTag.Synthesised;
     }
   } else if (type === ModifierType.Explicit) {
+    if (
+      item.rarity === ItemRarity.Unique &&
+      sources.some((s) => s.modifier.info.generation === "mutated")
+    ) {
+      filter.tag = FilterTag.Mutated;
+    }
+
     if (item.info.unique?.fixedStats) {
       const fixedStats = item.info.unique.fixedStats;
       if (!fixedStats.includes(filter.statRef)) {
@@ -580,7 +601,7 @@ export function finalFilterTweaks(ctx: FiltersCreationContext) {
     item.info.refName !== "Morior Invictus" &&
     item.info.refName !== "Darkness Enthroned"
   ) {
-    hideAllRunes(ctx.filters);
+    hideAllAugments(ctx.filters);
   }
 
   const hasEmptyModifier = showHasEmptyModifier(ctx);
@@ -723,9 +744,12 @@ function applyFlaskRules(filters: StatFilter[]) {
   }
 }
 
-function hideAllRunes(filters: StatFilter[]) {
+function hideAllAugments(filters: StatFilter[]) {
   for (const filter of filters) {
-    if (filter.tag === FilterTag.Rune || filter.tag === FilterTag.AddedRune) {
+    if (
+      filter.tag === FilterTag.Augment ||
+      filter.tag === FilterTag.AddedAugment
+    ) {
       filter.hidden = "filters.hide_const_roll";
       filter.disabled = true;
     }

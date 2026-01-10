@@ -67,7 +67,7 @@
     "quality": "Qualität: {0}",
     "gem_level": "Stufe: {0}",
     "gem_sockets": "Fassungen: {0}",
-    "rune_sockets": "Fassungen: {0}",
+    "augment_sockets": "Fassungen: {0}",
     "sentinel_charge": "Ladung: {0}",
     "find_in_stash": "Im Versteck finden",
     "find_same_price": "Filter by",
@@ -214,6 +214,7 @@
     "tag_sanctum": "Sanctum",
     "tag_desecrated": "Entweihtes",
     "tag_skill": "Skill",
+    "tag_mutated": "Mutated",
     "fill_rune_iron": "Fill Runes(Iron)",
     "grade": "Grad {0}",
     "hybrid_note": "Das Tier könnte aufgrund eines potenziellen Hybrid-Mods falsch sein"

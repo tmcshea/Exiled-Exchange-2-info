@@ -77,9 +77,9 @@
           :name="t('item.white_sockets')"
         />
         <filter-btn-numeric
-          v-if="filters.runeSockets"
-          :filter="filters.runeSockets"
-          :name="t('item.rune_sockets')"
+          v-if="filters.augmentSockets"
+          :filter="filters.augmentSockets"
+          :name="t('item.augment_sockets')"
         />
         <filter-btn-numeric
           v-if="filters.gemLevel"
@@ -155,7 +155,7 @@
       <!--
       <button
         v-if="
-          hasEmptyRuneSockets &&
+          hasEmptyAugmentSockets &&
           filters.itemEditorSelection &&
           !filters.itemEditorSelection.disabled
         "
@@ -177,7 +177,7 @@
           />
           <img
             v-else
-            :src="getRuneImage(filters.itemEditorSelection.value)"
+            :src="getAugmentImage(filters.itemEditorSelection.value)"
             class="max-w-full max-h-full overflow-hidden"
           />
         </div>
@@ -226,6 +226,32 @@
             :stat="stat"
           />
         </template>
+        <template v-if="showMissingFracturedWarning">
+          <div class="py-2 border-b border-gray-700 flex flex-col">
+            <div class="pb-1 flex items-baseline">
+              <i
+                class="w-5 shrink-0 fas fa-exclamation-triangle text-orange-400"
+              ></i>
+              <div
+                class="search-text mr-1 relative flex min-w-0"
+                style="line-height: 1rem"
+              >
+                {{ t("Unable to determine fractured stat") }}
+              </div>
+            </div>
+            <div class="ml-5 text-xs leading-none">
+              <span class="text-gray-600"
+                >{{ t("filters.tag_explicit") }} &mdash;
+              </span>
+              <a
+                target="_blank"
+                href="https://www.pathofexile.com/forum/view-thread/3891367"
+                class="text-orange-400 underline hidden"
+                >Bug Report</a
+              >
+            </div>
+          </div>
+        </template>
         <input type="submit" class="hidden" />
       </form>
       <div class="flex gap-x-4">
@@ -270,8 +296,9 @@ import UnknownModifier from "./UnknownModifier.vue";
 import { ItemFilters, StatFilter } from "./interfaces";
 import { ParsedItem, ItemRarity, ItemCategory } from "@/parser";
 import FilterBtnDropdown from "./FilterBtnDropdown.vue";
-import { RUNE_DATA_BY_RUNE } from "@/assets/data";
+import { AUGMENT_DATA_BY_AUGMENT } from "@/assets/data";
 import { ARMOUR, MARTIAL_WEAPON } from "@/parser/meta";
+import { ModifierType } from "@/parser/modifiers";
 
 export default defineComponent({
   name: "FiltersBlock",
@@ -324,32 +351,32 @@ export default defineComponent({
           props.item.rarity === ItemRarity.Unique
         ),
     );
-    // For handling filling runes
+    // For handling filling augments
     // watch(
     //   () => props.filters.itemEditorSelection?.value,
     //   (selected, prev) => {
-    //     const normalCase = selected !== prev && props.filters.tempRuneStorage;
+    //     const normalCase = selected !== prev && props.filters.tempAugmentStorage;
     //     if (normalCase && selected !== undefined) {
     //       // If last wasn't empty
     //       if (
     //         prev !== "None" &&
-    //         props.filters.tempRuneStorage &&
-    //         props.filters.tempRuneStorage.length > 0
+    //         props.filters.tempAugmentStorage &&
+    //         props.filters.tempAugmentStorage.length > 0
     //       ) {
-    //         // Remove current rune
+    //         // Remove current augment
     //         handleRemoveItemEdits(
     //           props.stats,
     //           props.item,
-    //           props.filters.tempRuneStorage!,
+    //           props.filters.tempAugmentStorage!,
     //         );
     //       }
     //       // If we didn't choose empty
     //       if (selected !== "None") {
-    //         // add new rune
+    //         // add new augment
     //         handleApplyItemEdits(
     //           props.stats,
     //           props.item,
-    //           props.filters.tempRuneStorage!,
+    //           props.filters.tempAugmentStorage!,
     //           selected,
     //         );
     //       }
@@ -387,16 +414,16 @@ export default defineComponent({
       selectPreset(id: string) {
         ctx.emit("preset", id);
       },
-      hasEmptyRuneSockets: computed(() => {
+      hasEmptyAugmentSockets: computed(() => {
         return (
-          props.item.runeSockets &&
-          props.item.runeSockets.empty > 0 &&
+          props.item.augmentSockets &&
+          props.item.augmentSockets.empty > 0 &&
           (MARTIAL_WEAPON.has(props.item.category!) ||
             ARMOUR.has(props.item.category!))
         );
       }),
-      getRuneImage(rune: string) {
-        const icon = RUNE_DATA_BY_RUNE[rune][0].icon;
+      getAugmentImage(augment: string) {
+        const icon = AUGMENT_DATA_BY_AUGMENT[augment][0].icon;
         return icon === "%NOT_FOUND%" ? "/images/404.png" : icon;
       },
       hiddenLabel: computed(() => {
@@ -408,6 +435,20 @@ export default defineComponent({
         } else {
           return t("filters.hidden_toggle");
         }
+      }),
+      showMissingFracturedWarning: computed(() => {
+        return (
+          // is fractured
+          props.item.isFractured &&
+          // on base item preset
+          props.presets.some(
+            (p) => p.id === "filters.preset_base_item" && p.active,
+          ) &&
+          // but item itself has no fractured mods
+          !props.item.statsByType.some(
+            (calc) => calc.type === ModifierType.Fractured,
+          )
+        );
       }),
     };
   },
