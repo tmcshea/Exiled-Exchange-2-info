@@ -45,6 +45,7 @@ title: Index Page
 ## P
 
 - [Price Check](/price-check)
+- [Private Leagues](/private-leagues.md)
 
 ## Q
 
