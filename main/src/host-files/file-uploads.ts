@@ -5,7 +5,8 @@ import { app } from "electron";
 import type { Server } from "http";
 
 export function addFileUploadRoutes(server: Server) {
-  const getUploadsPath = () => path.join(app.getPath("userData"), "apt-data", "files");
+  const getUploadsPath = () =>
+    path.join(app.getPath("userData"), "apt-data", "files");
 
   server.addListener("request", (req, res) => {
     if (req.method !== "GET" || !req.url?.startsWith("/uploads/")) return;

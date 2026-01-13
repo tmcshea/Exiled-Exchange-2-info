@@ -42,7 +42,9 @@
               :style="{ width: `${insight.confidence * 100}%` }"
             ></div>
           </div>
-          <div class="confidence-value">{{ Math.round(insight.confidence * 100) }}%</div>
+          <div class="confidence-value">
+            {{ Math.round(insight.confidence * 100) }}%
+          </div>
         </div>
       </div>
     </div>
@@ -50,90 +52,102 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
-import { AppConfig } from '@/web/Config'
-import { AIService } from '@/web/background/AIService'
-import type { ParsedItem } from '@/parser/ParsedItem'
-import type { AIInsightResponse } from '@/web/background/AIService'
+import { ref, computed, watch } from "vue";
+import { AppConfig } from "@/web/Config";
+import { AIService } from "@/web/background/AIService";
+import type { ParsedItem } from "@/parser/ParsedItem";
+import type { AIInsightResponse } from "@/web/background/AIService";
 
 const props = defineProps<{
-  item: ParsedItem
+  item: ParsedItem;
   priceData?: {
-    meanPrice?: number
-    medianPrice?: number
-    listingCount?: number
-    currency?: string
-  }
-}>()
+    meanPrice?: number;
+    medianPrice?: number;
+    listingCount?: number;
+    currency?: string;
+  };
+}>();
 
-const insight = ref<AIInsightResponse | null>(null)
-const isLoading = ref(false)
-const error = ref(false)
-const errorMessage = ref('')
+const insight = ref<AIInsightResponse | null>(null);
+const isLoading = ref(false);
+const error = ref(false);
+const errorMessage = ref("");
 
-const config = computed(() => AppConfig())
+const config = computed(() => AppConfig());
 
 const shouldShow = computed(() => {
-  return config.value.aiAssistant.enabled &&
-         config.value.aiAssistant.features.priceInsights
-})
+  return (
+    config.value.aiAssistant.enabled &&
+    config.value.aiAssistant.features.priceInsights
+  );
+});
 
 const isConfigError = computed(() => {
-  return insight.value?.error === 'NO_API_KEY' ||
-         insight.value?.error === 'AI_DISABLED'
-})
+  return (
+    insight.value?.error === "NO_API_KEY" ||
+    insight.value?.error === "AI_DISABLED"
+  );
+});
 
 async function fetchInsights() {
-  if (!shouldShow.value) return
+  if (!shouldShow.value) return;
 
-  isLoading.value = true
-  error.value = false
-  errorMessage.value = ''
+  isLoading.value = true;
+  error.value = false;
+  errorMessage.value = "";
 
   try {
     const response = await AIService.getPriceInsight({
       item: props.item,
-      priceData: props.priceData
-    })
+      priceData: props.priceData,
+    });
 
-    insight.value = response
+    insight.value = response;
 
     if (response.error) {
-      error.value = true
-      errorMessage.value = response.insight
+      error.value = true;
+      errorMessage.value = response.insight;
     }
   } catch (err) {
-    error.value = true
-    errorMessage.value = err instanceof Error ? err.message : 'Unknown error occurred'
+    error.value = true;
+    errorMessage.value =
+      err instanceof Error ? err.message : "Unknown error occurred";
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
 }
 
 function refresh() {
-  AIService.clearCache()
-  fetchInsights()
+  AIService.clearCache();
+  fetchInsights();
 }
 
 function openSettings() {
   // Trigger settings widget to open
   // This will be handled by the parent component or widget system
-  console.log('Open AI settings')
+  console.log("Open AI settings");
 }
 
 // Watch for item or price changes
-watch(() => [props.item, props.priceData], () => {
-  if (shouldShow.value) {
-    fetchInsights()
-  }
-}, { immediate: true, deep: true })
+watch(
+  () => [props.item, props.priceData],
+  () => {
+    if (shouldShow.value) {
+      fetchInsights();
+    }
+  },
+  { immediate: true, deep: true },
+);
 
 // Watch for config changes
-watch(() => config.value.aiAssistant.enabled, (enabled) => {
-  if (enabled) {
-    fetchInsights()
-  }
-})
+watch(
+  () => config.value.aiAssistant.enabled,
+  (enabled) => {
+    if (enabled) {
+      fetchInsights();
+    }
+  },
+);
 </script>
 
 <style scoped>
@@ -194,7 +208,9 @@ watch(() => config.value.aiAssistant.enabled, (enabled) => {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .error-state {

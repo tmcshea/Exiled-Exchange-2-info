@@ -1,173 +1,184 @@
-import { AppConfig } from '../Config'
-import type { ParsedItem } from '@/parser/ParsedItem'
+import { AppConfig } from "../Config";
+import type { ParsedItem } from "@/parser/ParsedItem";
 
 export interface AIInsightRequest {
-  item: ParsedItem
+  item: ParsedItem;
   priceData?: {
-    meanPrice?: number
-    medianPrice?: number
-    listingCount?: number
-    currency?: string
-  }
-  context?: string
+    meanPrice?: number;
+    medianPrice?: number;
+    listingCount?: number;
+    currency?: string;
+  };
+  context?: string;
 }
 
 export interface AIInsightResponse {
-  insight: string
-  confidence: number
-  timestamp: number
-  error?: string
+  insight: string;
+  confidence: number;
+  timestamp: number;
+  error?: string;
 }
 
 class AIServiceClass {
-  private requestCache = new Map<string, AIInsightResponse>()
-  private readonly CACHE_TTL = 1000 * 60 * 30 // 30 minutes
+  private requestCache = new Map<string, AIInsightResponse>();
+  private readonly CACHE_TTL = 1000 * 60 * 30; // 30 minutes
 
   async getPriceInsight(request: AIInsightRequest): Promise<AIInsightResponse> {
-    const config = AppConfig()
+    const config = AppConfig();
 
     if (!config.aiAssistant.enabled) {
       return {
-        insight: 'AI Assistant is disabled. Enable it in settings.',
+        insight: "AI Assistant is disabled. Enable it in settings.",
         confidence: 0,
         timestamp: Date.now(),
-        error: 'AI_DISABLED'
-      }
+        error: "AI_DISABLED",
+      };
     }
 
     if (!config.aiAssistant.apiKey) {
       return {
-        insight: 'No API key configured. Please add your Anthropic API key in settings.',
+        insight:
+          "No API key configured. Please add your Anthropic API key in settings.",
         confidence: 0,
         timestamp: Date.now(),
-        error: 'NO_API_KEY'
-      }
+        error: "NO_API_KEY",
+      };
     }
 
     if (!config.aiAssistant.features.priceInsights) {
       return {
-        insight: 'Price insights feature is disabled.',
+        insight: "Price insights feature is disabled.",
         confidence: 0,
         timestamp: Date.now(),
-        error: 'FEATURE_DISABLED'
-      }
+        error: "FEATURE_DISABLED",
+      };
     }
 
     // Generate cache key
-    const cacheKey = this.generateCacheKey(request)
-    const cached = this.requestCache.get(cacheKey)
+    const cacheKey = this.generateCacheKey(request);
+    const cached = this.requestCache.get(cacheKey);
 
     if (cached && Date.now() - cached.timestamp < this.CACHE_TTL) {
-      return cached
+      return cached;
     }
 
     try {
-      const response = await this.callAnthropicAPI(request)
-      this.requestCache.set(cacheKey, response)
-      return response
+      const response = await this.callAnthropicAPI(request);
+      this.requestCache.set(cacheKey, response);
+      return response;
     } catch (error) {
-      console.error('AI Service Error:', error)
+      console.error("AI Service Error:", error);
       return {
-        insight: `Error generating insights: ${error instanceof Error ? error.message : 'Unknown error'}`,
+        insight: `Error generating insights: ${error instanceof Error ? error.message : "Unknown error"}`,
         confidence: 0,
         timestamp: Date.now(),
-        error: 'API_ERROR'
-      }
+        error: "API_ERROR",
+      };
     }
   }
 
-  private async callAnthropicAPI(request: AIInsightRequest): Promise<AIInsightResponse> {
-    const config = AppConfig()
-    const prompt = this.buildPriceInsightPrompt(request)
+  private async callAnthropicAPI(
+    request: AIInsightRequest,
+  ): Promise<AIInsightResponse> {
+    const config = AppConfig();
+    const prompt = this.buildPriceInsightPrompt(request);
 
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': config.aiAssistant.apiKey,
-        'anthropic-version': '2023-06-01'
+        "Content-Type": "application/json",
+        "x-api-key": config.aiAssistant.apiKey,
+        "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
         model: config.aiAssistant.model,
         max_tokens: config.aiAssistant.maxTokens,
         temperature: config.aiAssistant.temperature,
-        messages: [{
-          role: 'user',
-          content: prompt
-        }]
-      })
-    })
+        messages: [
+          {
+            role: "user",
+            content: prompt,
+          },
+        ],
+      }),
+    });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}))
-      throw new Error(`Anthropic API error: ${response.status} - ${JSON.stringify(errorData)}`)
+      const errorData = await response.json().catch(() => ({}));
+      throw new Error(
+        `Anthropic API error: ${response.status} - ${JSON.stringify(errorData)}`,
+      );
     }
 
-    const data = await response.json()
-    const insight = data.content?.[0]?.text || 'No insight generated'
+    const data = await response.json();
+    const insight = data.content?.[0]?.text || "No insight generated";
 
     return {
       insight,
       confidence: 0.85,
-      timestamp: Date.now()
-    }
+      timestamp: Date.now(),
+    };
   }
 
   private buildPriceInsightPrompt(request: AIInsightRequest): string {
-    const { item, priceData } = request
+    const { item, priceData } = request;
 
     let prompt = `You are an expert Path of Exile 2 trading assistant. Analyze this item and provide concise pricing insights.
 
 **Item Details:**
-- Name: ${item.info.name || 'Unknown'}
-- Base Type: ${item.info.refName || 'Unknown'}
-- Rarity: ${item.rarity || 'Unknown'}
-- Item Level: ${item.itemLevel || 'Unknown'}
-`
+- Name: ${item.info.name || "Unknown"}
+- Base Type: ${item.info.refName || "Unknown"}
+- Rarity: ${item.rarity || "Unknown"}
+- Item Level: ${item.itemLevel || "Unknown"}
+`;
 
     if (item.category) {
-      prompt += `- Category: ${item.category}\n`
+      prompt += `- Category: ${item.category}\n`;
     }
 
     if (item.quality) {
-      prompt += `- Quality: ${item.quality}%\n`
+      prompt += `- Quality: ${item.quality}%\n`;
     }
 
     if (item.gemSockets) {
-      prompt += `- Sockets: ${item.gemSockets.number}\n`
+      prompt += `- Sockets: ${item.gemSockets.number}\n`;
     }
 
     // Add modifiers from statsByType
-    const implicitMods = item.statsByType.filter(stat => stat.type === 'implicit')
+    const implicitMods = item.statsByType.filter(
+      (stat) => stat.type === "implicit",
+    );
     if (implicitMods.length) {
-      prompt += `\n**Implicit Modifiers:**\n`
-      implicitMods.forEach(stat => {
+      prompt += `\n**Implicit Modifiers:**\n`;
+      implicitMods.forEach((stat) => {
         if (stat.sources[0]?.stat?.translation?.string) {
-          prompt += `- ${stat.sources[0].stat.translation.string}\n`
+          prompt += `- ${stat.sources[0].stat.translation.string}\n`;
         }
-      })
+      });
     }
 
-    const explicitMods = item.statsByType.filter(stat => stat.type === 'explicit')
+    const explicitMods = item.statsByType.filter(
+      (stat) => stat.type === "explicit",
+    );
     if (explicitMods.length) {
-      prompt += `\n**Explicit Modifiers:**\n`
-      explicitMods.forEach(stat => {
+      prompt += `\n**Explicit Modifiers:**\n`;
+      explicitMods.forEach((stat) => {
         if (stat.sources[0]?.stat?.translation?.string) {
-          prompt += `- ${stat.sources[0].stat.translation.string}\n`
+          prompt += `- ${stat.sources[0].stat.translation.string}\n`;
         }
-      })
+      });
     }
 
     if (priceData) {
-      prompt += `\n**Market Data:**\n`
+      prompt += `\n**Market Data:**\n`;
       if (priceData.meanPrice) {
-        prompt += `- Mean Price: ${priceData.meanPrice} ${priceData.currency || 'chaos'}\n`
+        prompt += `- Mean Price: ${priceData.meanPrice} ${priceData.currency || "chaos"}\n`;
       }
       if (priceData.medianPrice) {
-        prompt += `- Median Price: ${priceData.medianPrice} ${priceData.currency || 'chaos'}\n`
+        prompt += `- Median Price: ${priceData.medianPrice} ${priceData.currency || "chaos"}\n`;
       }
       if (priceData.listingCount) {
-        prompt += `- Listings Available: ${priceData.listingCount}\n`
+        prompt += `- Listings Available: ${priceData.listingCount}\n`;
       }
     }
 
@@ -177,22 +188,22 @@ Provide a brief 2-3 sentence analysis covering:
 2. Whether it's a good deal, overpriced, or fairly priced
 3. What type of builds would want this item
 
-Keep it concise and actionable. Focus on the most important factors affecting price.`
+Keep it concise and actionable. Focus on the most important factors affecting price.`;
 
-    return prompt
+    return prompt;
   }
 
   private generateCacheKey(request: AIInsightRequest): string {
-    const itemKey = `${request.item.info.name}-${request.item.rarity}-${request.item.itemLevel}`
-    const priceKey = request.priceData ?
-      `${request.priceData.meanPrice}-${request.priceData.medianPrice}` :
-      'no-price'
-    return `${itemKey}-${priceKey}`
+    const itemKey = `${request.item.info.name}-${request.item.rarity}-${request.item.itemLevel}`;
+    const priceKey = request.priceData
+      ? `${request.priceData.meanPrice}-${request.priceData.medianPrice}`
+      : "no-price";
+    return `${itemKey}-${priceKey}`;
   }
 
   clearCache(): void {
-    this.requestCache.clear()
+    this.requestCache.clear();
   }
 }
 
-export const AIService = new AIServiceClass()
+export const AIService = new AIServiceClass();
