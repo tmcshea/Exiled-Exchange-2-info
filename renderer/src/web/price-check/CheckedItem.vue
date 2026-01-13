@@ -4,6 +4,7 @@
     <!-- <price-prediction v-if="showPredictedPrice" class="mb-4" :item="item" /> -->
     <!-- <price-trend v-else :item="item" :filters="itemFilters" /> -->
     <price-trend :item="item" :filters="itemFilters" />
+    <ai-price-insights :item="item" :price-data="priceData" />
     <filters-block
       ref="filtersComponent"
       :filters="itemFilters"
@@ -99,6 +100,7 @@ import { FilterPreset } from "./filters/interfaces";
 import { PriceCheckWidget } from "../overlay/interfaces";
 import { useLeagues } from "@/web/background/Leagues";
 import { randomTip, TIP_FREQUENCY_MAP } from "../help/tips";
+import AIPriceInsights from "./ai-insights/AIPriceInsights.vue";
 
 let _showSupportLinksCounter = 0;
 let _showTipCounter = 15;
@@ -116,6 +118,7 @@ export default defineComponent({
     FilterName,
     StackValue,
     Tip,
+    AIPriceInsights,
   },
   props: {
     item: {
@@ -337,6 +340,13 @@ export default defineComponent({
 
     const { t } = useI18n();
 
+    // Price data for AI insights (can be enhanced to pull from trade listings)
+    const priceData = computed(() => {
+      // TODO: Extract actual price data from trade listings when available
+      // For now, return undefined - AI will still provide insights without market data
+      return undefined;
+    });
+
     return {
       t,
       itemFilters,
@@ -349,6 +359,7 @@ export default defineComponent({
       noUniqueSelection,
       handleSearchMouseenter,
       showSupportLinks,
+      priceData,
       presets: computed(() =>
         presets.value.presets.map((preset) => ({
           id: preset.id,
