@@ -5,13 +5,13 @@ import { app } from "electron";
 import type { Server } from "http";
 
 export function addFileUploadRoutes(server: Server) {
-  const uploadsPath = path.join(app.getPath("userData"), "apt-data", "files");
+  const getUploadsPath = () => path.join(app.getPath("userData"), "apt-data", "files");
 
   server.addListener("request", (req, res) => {
     if (req.method !== "GET" || !req.url?.startsWith("/uploads/")) return;
 
     fs.createReadStream(
-      path.join(uploadsPath, req.url.slice("/uploads/".length)),
+      path.join(getUploadsPath(), req.url.slice("/uploads/".length)),
     ).pipe(res);
   });
 
@@ -26,6 +26,7 @@ export function addFileUploadRoutes(server: Server) {
       contents = Buffer.concat([contents, chunk]);
     });
     req.once("end", () => {
+      const uploadsPath = getUploadsPath();
       const hash = crypto.createHash("md5").update(contents).digest("hex");
       const filename = `${hash}${path.extname(req.url!)}`;
 

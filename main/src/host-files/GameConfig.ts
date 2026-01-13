@@ -7,7 +7,7 @@ import { guessFileLocation } from "./utils";
 import type { Logger } from "../RemoteLogger";
 import type { ServerEvents } from "../server";
 
-const POSSIBLE_PATH =
+const getPossiblePaths = () =>
   process.platform === "win32"
     ? [
         path.join(
@@ -65,7 +65,7 @@ export class GameConfig {
     }
 
     if (!filePath.length) {
-      const guessedPath = await guessFileLocation(POSSIBLE_PATH);
+      const guessedPath = await guessFileLocation(getPossiblePaths());
       if (guessedPath != null) {
         filePath = guessedPath;
       } else {

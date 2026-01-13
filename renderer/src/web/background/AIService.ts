@@ -119,8 +119,8 @@ class AIServiceClass {
     let prompt = `You are an expert Path of Exile 2 trading assistant. Analyze this item and provide concise pricing insights.
 
 **Item Details:**
-- Name: ${item.name || 'Unknown'}
-- Base Type: ${item.baseType || 'Unknown'}
+- Name: ${item.info.name || 'Unknown'}
+- Base Type: ${item.info.refName || 'Unknown'}
 - Rarity: ${item.rarity || 'Unknown'}
 - Item Level: ${item.itemLevel || 'Unknown'}
 `
@@ -129,26 +129,32 @@ class AIServiceClass {
       prompt += `- Category: ${item.category}\n`
     }
 
-    if (item.props?.quality) {
-      prompt += `- Quality: ${item.props.quality}%\n`
+    if (item.quality) {
+      prompt += `- Quality: ${item.quality}%\n`
     }
 
-    if (item.sockets?.length) {
-      prompt += `- Sockets: ${item.sockets.length}\n`
+    if (item.gemSockets) {
+      prompt += `- Sockets: ${item.gemSockets.number}\n`
     }
 
-    // Add modifiers
-    if (item.modifiers?.implicit?.length) {
+    // Add modifiers from statsByType
+    const implicitMods = item.statsByType.filter(stat => stat.type === 'implicit')
+    if (implicitMods.length) {
       prompt += `\n**Implicit Modifiers:**\n`
-      item.modifiers.implicit.forEach(mod => {
-        prompt += `- ${mod.text}\n`
+      implicitMods.forEach(stat => {
+        if (stat.sources[0]?.stat?.translation?.string) {
+          prompt += `- ${stat.sources[0].stat.translation.string}\n`
+        }
       })
     }
 
-    if (item.modifiers?.explicit?.length) {
+    const explicitMods = item.statsByType.filter(stat => stat.type === 'explicit')
+    if (explicitMods.length) {
       prompt += `\n**Explicit Modifiers:**\n`
-      item.modifiers.explicit.forEach(mod => {
-        prompt += `- ${mod.text}\n`
+      explicitMods.forEach(stat => {
+        if (stat.sources[0]?.stat?.translation?.string) {
+          prompt += `- ${stat.sources[0].stat.translation.string}\n`
+        }
       })
     }
 
@@ -177,7 +183,7 @@ Keep it concise and actionable. Focus on the most important factors affecting pr
   }
 
   private generateCacheKey(request: AIInsightRequest): string {
-    const itemKey = `${request.item.name}-${request.item.rarity}-${request.item.itemLevel}`
+    const itemKey = `${request.item.info.name}-${request.item.rarity}-${request.item.itemLevel}`
     const priceKey = request.priceData ?
       `${request.priceData.meanPrice}-${request.priceData.medianPrice}` :
       'no-price'

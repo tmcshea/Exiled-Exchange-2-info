@@ -107,6 +107,19 @@ export const defaultConfigMock = (overrides: Partial<Config> = {}) => {
     alphas: [],
     tipsFrequency: TipsFrequency.Always,
     readClientLog: false,
+    aiAssistant: {
+      enabled: false,
+      provider: "anthropic",
+      apiKey: "",
+      model: "claude-3-5-sonnet-20241022",
+      features: {
+        priceInsights: false,
+        itemAnalysis: false,
+        buildSuggestions: false,
+      },
+      maxTokens: 1024,
+      temperature: 0.7,
+    },
   };
 
   mockConfig = { ...defaultConfig, ...overrides };
