@@ -150,16 +150,42 @@ export interface Config {
   alphas: [];
   tipsFrequency: TipsFrequency;
   readClientLog: boolean; // default to false, opt-in only
+  aiAssistant: {
+    enabled: boolean;
+    provider: "anthropic" | "openai" | "ollama";
+    apiKey: string;
+    model: string;
+    features: {
+      priceInsights: boolean;
+      itemAnalysis: boolean;
+      buildSuggestions: boolean;
+    };
+    maxTokens: number;
+    temperature: number;
+  };
 }
 
 export const defaultConfig = (): Config => ({
-  configVersion: 29,
+  configVersion: 30,
   overlayKey: "Shift + Space",
   overlayBackground: "rgba(129, 139, 149, 0.15)",
   overlayBackgroundClose: true,
   overlayAlwaysClose: false,
   restoreClipboard: false,
   showAttachNotification: true,
+  aiAssistant: {
+    enabled: false,
+    provider: "anthropic",
+    apiKey: "",
+    model: "claude-3-5-sonnet-20241022",
+    features: {
+      priceInsights: true,
+      itemAnalysis: false,
+      buildSuggestions: false,
+    },
+    maxTokens: 1024,
+    temperature: 0.7,
+  },
   commands: [
     {
       text: "/hideout",
@@ -619,6 +645,24 @@ function upgradeConfig(_config: Config): Config {
     config.readClientLog = false; // default to false, opt-in only
 
     config.configVersion = 29;
+  }
+  if (config.configVersion < 30) {
+    // NOTE: AI Assistant Integration
+    (config as any).aiAssistant = {
+      enabled: false,
+      provider: "anthropic",
+      apiKey: "",
+      model: "claude-3-5-sonnet-20241022",
+      features: {
+        priceInsights: true,
+        itemAnalysis: false,
+        buildSuggestions: false,
+      },
+      maxTokens: 1024,
+      temperature: 0.7,
+    };
+
+    config.configVersion = 30;
   }
   return config as unknown as Config;
 }

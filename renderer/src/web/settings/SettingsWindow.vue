@@ -141,6 +141,7 @@ import SettingsStashSearch from "../stash-search/stash-search-editor.vue";
 import SettingsStopwatch from "../stopwatch/settings-stopwatch.vue";
 import SettingsItemSearch from "../item-search/settings-item-search.vue";
 import SettingsLeveling from "../leveling/settings-leveling.vue";
+import SettingsAI from "./ai-assistant.vue";
 import { disableWidget, enableWidget, findWidget } from "./utils";
 
 function shuffle<T>(array: T[]): T[] {
@@ -334,6 +335,7 @@ function menuByType(type?: string) {
         [SettingsHotkeys, SettingsChat],
         [SettingsGeneral],
         [SettingsPricecheck, SettingsMaps, SettingsItemcheck],
+        [SettingsAI],
         [SettingsLeveling],
         [SettingsHelp, SettingsDebug, SettingsAbout],
       ];
